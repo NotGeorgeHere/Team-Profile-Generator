@@ -60,9 +60,9 @@ function addNewEmployee(){
         else if (data.completedQuestionCheck === 'Add an intern'){
             addIntern();
         }
+        //Runs the function to create the html file using the team array
         else{
-            //finishBuildingTeam();
-            console.log("All done");
+            finishBuildingTeam();
         }
 
     });
@@ -73,7 +73,6 @@ function addEngineer(){
     inquirer.prompt(engineerQuestions).then((data) => {
         const engineer = new Engineer(data.engineerName, data.engineerID, data.engineerEmail, data.engineerGitHub);
         team.push(engineer);
-        console.log(team);
         addNewEmployee();
     });
 }
@@ -83,9 +82,16 @@ function addIntern(){
     inquirer.prompt(internQuestions).then((data) => {
         const intern = new Intern(data.internName, data.internID, data.internEmail, data.internSchool);
         team.push(intern);
-        console.log(team);
         addNewEmployee();
     });
+}
+
+//Function for writing the file
+function finishBuildingTeam(){
+    //Calls the render function with the team array details and uses this to create the html file
+    let teamContent = render(team);
+    fs.writeFile(outputPath, teamContent, (err) =>
+    err ? console.error(err): console.log('Success!'));    
 }
 
 init();
